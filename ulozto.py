@@ -128,9 +128,15 @@ def download_file(slug, captcha_token = None):
 	else:
 		print(str(response['code']) + " | " + response['message'])
 		if response['code'] == 403:
+			print("This file can't be downloaded anymore")
 			return False, None
-		else:
+		elif response['code'] == 422:
+			print("Input file link doesn't seem to come from Ulož.to")
+			return False, None
+		elif response['code'] == 401:
 			return True, response['data']['captcha_token']
+		else:
+			return False, None
 
 def captcha_request(captcha_token):	
 	headers = {
