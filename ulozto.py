@@ -127,8 +127,11 @@ def download_file(slug, captcha_token = None):
 		return False, None
 	else:
 		print(str(response['code']) + " | " + response['message'])
-		return True, response['data']['captcha_token'] 
-	
+		if response['code'] == 403:
+			return False, None
+		else:
+			return True, response['data']['captcha_token']
+
 def captcha_request(captcha_token):	
 	headers = {
 	    'X-Auth-Token': settings['x_auth_token'],
