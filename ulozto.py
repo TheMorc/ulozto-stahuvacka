@@ -123,7 +123,7 @@ def download_file(slug, captcha_token = None):
 	response = json.loads(request.text)
 	if 'link' in response:
 		print("Link is valid until " + response['download_url_valid_until'])
-		print(link(response['link']))
+		print("Download link: " + link(response['link']))
 		return False, None
 	else:
 		print(str(response['code']) + " | " + response['message'])
@@ -143,7 +143,7 @@ def captcha_request(captcha_token):
 	
 	request = requests.post('https://apis.uloz.to/v5/captcha/' + captcha_token + '/url', cookies={'_nss': '1'}, headers=headers,data=data)
 	response = json.loads(request.text)
-	print(link(response['url']))
+	print("Captcha link: " + link(response['url']))
 	
 print("Uložto sťahuvačka")	
 get_session_cookie()
@@ -155,7 +155,7 @@ if not os.path.isfile('ulozto.cfg'): #je šanca že apka sa pustila prvý raz
 config.read('ulozto.cfg')
 
 while True:
-	download_link = input("Download link: ")
+	download_link = input("File link: ")
 	parsed_link = urlparse(download_link).path[1:]
 	parts = parsed_link.split('/')
 	captcha_required, second_captcha = download_file(parts[1])	
